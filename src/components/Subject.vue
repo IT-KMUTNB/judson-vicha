@@ -19,6 +19,7 @@
 </template>
 
 <script>
+/* global alert */
 export default {
   name: 'Subject',
   props: ['subject', 'techers', 'relations'],
@@ -42,7 +43,11 @@ export default {
   },
   methods: {
     addRelation () {
-      this.$emit('addRelation', this.selectedTecher, this.subject.id)
+      if (this.selectedTecher) {
+        this.$emit('addRelation', this.selectedTecher, this.subject.id)
+      } else {
+        alert('โปรดเลือกอาจารย์ผู้สอน')
+      }
     },
     removeRelation (techer, subject) {
       this.$emit('removeRelation', techer, subject)
