@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="subject box">
+
     <h1>{{ subject.id }} {{ subject.name }} ({{ subject.credit }})</h1>
 
     <ul>
