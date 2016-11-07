@@ -1,18 +1,20 @@
 <template lang="html">
   <div class="subject box">
 
-    <h1>{{ subject.id }} {{ subject.name }} ({{ subject.credit }})</h1>
+    <h1>{{ subject.code }} {{ subject.name }} ({{ subject.credit }})</h1>
 
     <ul>
       <li v-for="by in techBy">
         <h3>{{ by.name }} <a @click="removeRelation(by.id, subject.id)">x</a></h3>
       </li>
     </ul>
-    
+
     <div v-if="techerOptions.length > 0" class="form-inline">
-      <select v-model="selectedTecher" class="form-control">
-        <option v-for="techer in techerOptions" :value="techer.id">{{ techer.name }}</option>
-      </select>
+      <div class="form-group">
+        <select v-model="selectedTecher" class="form-control">
+          <option v-for="techer in techerOptions" :value="techer.id">{{ techer.name }}</option>
+        </select>
+      </div>
       <button @click="addRelation()" class="btn btn-info"> + เพิ่มอาจารย์ผู้สอน</button>
     </div>
 

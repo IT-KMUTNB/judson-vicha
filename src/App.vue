@@ -1,30 +1,48 @@
 <template>
   <div id="app">
-    <h2>ไฟล์อาจารย์</h2>
-    <input type="file" v-on:change="onChangeTeacher">
-    <h2>ไฟล์วิชา</h2>
-    <input type="file" v-on:change="onChangeSubjects">
+    <div class="dropdown">
+      <i class="fa fa-cogs" aria-hidden="true"></i>
+      <div class="dropdown-content">
+        <button @click="clearAll()" class="btn btn-danger">Clear</button>
+      </div>
+    </div>
+
     <div class="container-fluid">
       <div class="row">
-
-        <div class="col-md-6">
-          <div v-for="subject in localStorage.subjects">
-            <subject
-              :subject="subject"
-              :techers="localStorage.techers"
-              :relations="localStorage.relations"
-              @addRelation="addRelation"
-              @removeRelation="removeRelation"></subject>
+        <div class="col-sm-6">
+          <div class="over-flow-scroll">
+            <div v-if="localStorage.subjects.length <= 0"class="">
+              <h2>รายชื่อวิชา</h2>
+              <input type="file" v-on:change="onChangeSubjects">
+              <br>
+              * ไฟล์ตัวอย่าง <a href="/static/teacher.csv">Download</a>
+            </div>
+            <div v-if="localStorage.subjects.length > 0" v-for="subject in localStorage.subjects">
+              <subject
+                :subject="subject"
+                :techers="localStorage.techers"
+                :relations="localStorage.relations"
+                @addRelation="addRelation"
+                @removeRelation="removeRelation"></subject>
+            </div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div v-for="techer in localStorage.techers">
-            <techer
-              :techer="techer"
-              :subjects="localStorage.subjects"
-              :relations="localStorage.relations"
-              @removeRelation="removeRelation"></techer>
+        <div class="col-sm-5">
+          <div class="over-flow-scroll">
+            <div v-if="localStorage.techers.length <= 0" class="">
+              <h2>รายชื่ออาจารย์ผู้สอน</h2>
+              <input type="file" v-on:change="onChangeTeacher">
+              <br>
+              * ไฟล์ตัวอย่าง <a href="/static/subject.csv">Download</a>
+            </div>
+            <div v-if="localStorage.techers.length > 0" v-for="techer in localStorage.techers">
+              <techer
+                :techer="techer"
+                :subjects="localStorage.subjects"
+                :relations="localStorage.relations"
+                @removeRelation="removeRelation"></techer>
+            </div>
           </div>
         </div>
 
@@ -45,6 +63,11 @@ export default {
     }
   },
   methods: {
+    clearAll () {
+      this.localStorage.subjects = []
+      this.localStorage.techers = []
+      this.localStorage.relations = []
+    },
     addRelation (techer, subject) {
       if (!this.localStorage.relations.find(r => r.techer === techer && r.subject === subject)) {
         this.localStorage.relations.push({
@@ -62,7 +85,7 @@ export default {
       var files = e.target.files
       var file = files[0]
       var base64 = ''
-      console.log(file)
+      // console.log(file)
       if (files && file) {
         var reader = new FileReader()
       }
@@ -75,19 +98,24 @@ export default {
       }
       reader.readAsBinaryString(file)
     },
+    genId (index) {
+      return index + '.' + Date.now() + Math.random()
+    },
     convertToJsonTeacher (str) {
+      var vm = this
       var teacher = []
       var items = str.split('\n')
       items = items.slice(1, items.length)
+      var i = 1
       items.forEach(item => {
         var colums = item.split(',')
         if (colums[0] !== '') {
           var data = {
-            id: colums[0],
-            name: colums[1]
+            id: vm.genId(i++),
+            name: colums[0]
           }
           teacher.push(data)
-          console.log(data)
+          // console.log(data)
         }
       })
       this.localStorage.techers = teacher
@@ -97,7 +125,7 @@ export default {
       var files = e.target.files
       var file = files[0]
       var base64 = ''
-      console.log(file)
+      // console.log(file)
       if (files && file) {
         var reader = new FileReader()
       }
@@ -111,19 +139,22 @@ export default {
       reader.readAsBinaryString(file)
     },
     convertToJsonSubjects (str) {
+      var vm = this
       var subject = []
       var items = str.split('\n')
       items = items.slice(1, items.length)
+      var i = 1
       items.forEach(item => {
         var colums = item.split(',')
         if (colums[0] !== '') {
           var data = {
-            id: colums[0],
+            id: vm.genId(i++),
+            code: colums[0],
             name: colums[1],
             credit: parseInt(colums[2])
           }
           subject.push(data)
-          console.log(data)
+          // console.log(data)
         }
       })
       this.localStorage.subjects = subject
@@ -200,6 +231,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.over-flow-scroll {
+  overflow-y: scroll;
+  min-height: 100vh;
+  height: 100vh;
+}
 h3 a {
   cursor: pointer;
   color: #F00;
@@ -211,5 +247,26 @@ h3 a:hover {
   border: 1px solid #ccc;
   margin: 20px;
   padding: 20px;
+}
+
+.dropdown {
+  position: fixed;;
+  display: inline-block;
+  text-align: right;
+  float: right;
+  width: 100px;
+  top: 20px;
+  right: 20px;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 </style>

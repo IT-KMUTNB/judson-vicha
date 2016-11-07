@@ -4,7 +4,7 @@
 
     <ul>
       <li v-for="subject in teching">
-        <h3>{{ subject.id }} {{ subject.name }} ({{ subject.credit }})
+        <h3>{{ subject.code }} {{ subject.name }} ({{ subject.credit }})
           <a @click="removeRelation(techer.id, subject.id)">x</a>
         </h3>
       </li>
