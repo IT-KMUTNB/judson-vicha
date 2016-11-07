@@ -1,12 +1,5 @@
 <template>
   <div id="app">
-    <div class="dropdown">
-      <i class="fa fa-cogs" aria-hidden="true"></i>
-      <div class="dropdown-content">
-        <button @click="clearAll()" class="btn btn-danger">Clear</button>
-      </div>
-    </div>
-
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6">
@@ -48,13 +41,19 @@
 
       </div>
     </div>
+    <div class="dropdown">
+      <i class="fa fa-cogs" aria-hidden="true"></i>
+      <div class="dropdown-content">
+        <button @click="clearAll()" class="btn btn-danger">Clear</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Subject from './components/Subject'
 import Techer from './components/Techer'
-/* global FileReader, btoa, atob */
+/* global FileReader, btoa, atob, confirm */
 export default {
   name: 'app',
   data () {
@@ -64,9 +63,12 @@ export default {
   },
   methods: {
     clearAll () {
-      this.localStorage.subjects = []
-      this.localStorage.techers = []
-      this.localStorage.relations = []
+      var c = confirm('ต้องการ Clear ค่าทั้งหมดจริงๆใช้ไหม')
+      if (c) {
+        this.localStorage.subjects = []
+        this.localStorage.techers = []
+        this.localStorage.relations = []
+      }
     },
     addRelation (techer, subject) {
       if (!this.localStorage.relations.find(r => r.techer === techer && r.subject === subject)) {
@@ -257,6 +259,7 @@ h3 a:hover {
   width: 100px;
   top: 20px;
   right: 20px;
+  font-size: 26px;
 }
 .dropdown-content {
   display: none;
