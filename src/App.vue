@@ -8,7 +8,7 @@
               <h2>รายชื่อวิชา</h2>
               <input type="file" v-on:change="onChangeSubjects">
               <br>
-              * ไฟล์ตัวอย่าง <a href="/static/teacher.csv">Download</a>
+              * ไฟล์ตัวอย่าง <a href="/static/subject.csv">Download</a>
             </div>
             <div v-if="localStorage.subjects.length > 0" v-for="subject in localStorage.subjects">
               <subject
@@ -27,7 +27,7 @@
               <h2>รายชื่ออาจารย์ผู้สอน</h2>
               <input type="file" v-on:change="onChangeTeacher">
               <br>
-              * ไฟล์ตัวอย่าง <a href="/static/subject.csv">Download</a>
+              * ไฟล์ตัวอย่าง <a href="/static/teacher.csv">Download</a>
             </div>
             <div v-if="localStorage.techers.length > 0" v-for="techer in localStorage.techers">
               <techer
