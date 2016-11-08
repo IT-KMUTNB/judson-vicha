@@ -1,11 +1,11 @@
 <template lang="html">
-  <div class="subject box">
+  <div class="subject box" :class="{'bg-success': techBy.length > 0}">
 
-    <h1>{{ subject.code }} {{ subject.name }} ({{ subject.credit }})</h1>
+    <h3>{{ subject.code }} {{ subject.name }} ({{ subject.credit }})</h3>
 
     <ul>
       <li v-for="by in techBy">
-        <h3>{{ by.name }} <a @click="removeRelation(by.id, subject.id)">x</a></h3>
+        <h4>{{ by.name }} <a @click="removeRelation(by.id, subject.id)">x</a></h4>
       </li>
     </ul>
 

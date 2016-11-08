@@ -238,17 +238,18 @@ export default {
   min-height: 100vh;
   height: 100vh;
 }
-h3 a {
+h4 a {
   cursor: pointer;
   color: #F00;
 }
-h3 a:hover {
+h4 a:hover {
   color: #B00;
 }
 .box {
-  border: 1px solid #ccc;
+  border: 1px solid #f5f5f5;
   margin: 20px;
   padding: 20px;
+  padding-top: 5px;
 }
 
 .dropdown {
