@@ -10,6 +10,11 @@
               <br>
               * ไฟล์ตัวอย่าง <a href="/static/subject.csv">Download</a>
             </div>
+            <div v-if="localStorage.subjects.length <= 0"class="">
+              <h2>Import Save File (.json)</h2>
+              <input type="file" v-on:change="onChangeReadJsonSaveFile">
+              <br>
+            </div>
             <div v-if="localStorage.subjects.length > 0" v-for="subject in localStorage.subjects">
               <subject
                 :subject="subject"
@@ -45,7 +50,8 @@
       <i class="fa fa-cogs" aria-hidden="true"></i>
       <div class="dropdown-content">
         <button @click="clearAll()" class="btn btn-danger">Clear</button>
-        <button @click="convertJsonToCsv" class="btn btn-danger">save</button>
+        <button @click="saveToJsonFile" class="btn btn-danger">Save</button>
+        <button @click="convertJsonToCsv" class="btn btn-danger">Export</button>
       </div>
     </div>
   </div>
@@ -147,7 +153,6 @@ export default {
       var files = e.target.files
       var file = files[0]
       var base64 = ''
-      // console.log(file)
       if (files && file) {
         var reader = new FileReader()
       }
@@ -156,7 +161,6 @@ export default {
         base64 = btoa(binaryString)
         var str = decodeURIComponent(escape(atob(base64)))
         vm.convertToJsonSubjects(str)
-        // console.log(str)
       }
       reader.readAsBinaryString(file)
     },
@@ -176,69 +180,58 @@ export default {
             credit: parseInt(colums[2])
           }
           subject.push(data)
-          // console.log(data)
         }
       })
       this.localStorage.subjects = subject
+    },
+    saveToJsonFile () {
+      var jsonData = {'subjects': this.localStorage.subjects, 'techers': this.localStorage.techers, 'relations': this.localStorage.relations}
+      let dataStr = JSON.stringify(jsonData)
+      let dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr)
+      var today = new Date()
+      var dd = today.getDate()
+      var mm = today.getMonth() + 1
+      var yyyy = today.getFullYear()
+      let exportFileDefaultName = 'save' + dd + '/' + mm + '/' + yyyy + '.json'
+
+      let linkElement = document.createElement('a')
+      linkElement.setAttribute('href', dataUri)
+      linkElement.setAttribute('download', exportFileDefaultName)
+      linkElement.click()
+    },
+    onChangeReadJsonSaveFile (e) {
+      var vm = this
+      var files = e.target.files
+      var file = files[0]
+      var base64 = ''
+      if (files && file) {
+        var reader = new FileReader()
+      }
+      reader.onload = function (readerEvt) {
+        var binaryString = readerEvt.target.result
+        base64 = btoa(binaryString)
+        var str = decodeURIComponent(escape(atob(base64)))
+        vm.importJsonSaveFile(str)
+      }
+      reader.readAsBinaryString(file)
+    },
+    importJsonSaveFile (strJson) {
+      var jsonData = JSON.parse(strJson)
+      this.localStorage.subjects = jsonData.subjects
+      this.localStorage.techers = jsonData.techers
+      this.localStorage.relations = jsonData.relations
     }
   },
   created () {
     if (!this.localStorage.techers) {
       this.localStorage.techers = []
     }
-    // this.localStorage.techers = [
-    //   {
-    //     id: 1,
-    //     name: 'อ.อนิราช มิ่งขวัญ'
-    //   },
-    //   {
-    //     id: 2,
-    //     name: 'อ.นิติการ นาคเจือทอง'
-    //   },
-    //   {
-    //     id: 3,
-    //     name: 'อ.นิมิต ศรีคำทา'
-    //   }
-    // ]
     if (!this.localStorage.subjects) {
       this.localStorage.subjects = []
     }
-    // this.localStorage.subjects = [
-    //
-    //   {
-    //     id: '662301',
-    //     name: 'Data Structure',
-    //     credit: 3
-    //   },
-    //   {
-    //     id: '662302',
-    //     name: 'Data Network',
-    //     credit: 3
-    //   },
-    //   {
-    //     id: '662303',
-    //     name: 'Data Communication',
-    //     credit: 1
-    //   }
-    // ]
     if (!this.localStorage.relations) {
       this.localStorage.relations = []
     }
-
-    // this.localStorage.relations = [
-    //   {
-    //     techer: 1, subject: '662301'
-    //   },
-    //   {
-    //     techer: 1, subject: '662302'
-    //   },
-    //   {
-    //     techer: 2, subject: '662302'
-    //   },
-    //   {
-    //     techer: 3, subject: '662303'
-    //   }
-    // ]
   },
   components: {
     Subject, Techer
