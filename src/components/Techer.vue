@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="techer box" :class="{'bg-success': sumCredit >= 6, 'bg-warning': sumCredit >= 10, 'bg-danger': sumCredit >= 15}">
-    <h3>{{ techer.name }} ({{ sumCredit }})</h3>
+    <h3>{{ techer.name }} ({{ sumCredit }} Credits)</h3>
 
     <ul>
       <li v-for="subject in teching">

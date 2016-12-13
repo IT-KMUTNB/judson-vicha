@@ -8,7 +8,7 @@
               <h2>รายชื่อวิชา</h2>
               <input type="file" v-on:change="onChangeSubjects">
               <br>
-              * ไฟล์ตัวอย่าง <a href="/static/subject.csv">Download</a>
+              * ไฟล์ตัวอย่าง <a href="/static/subject.csv" class="btn btn-info" >Download</a>
             </div>
             <div v-if="localStorage.subjects.length <= 0"class="">
               <h2>Import Save File (.json)</h2>
@@ -32,7 +32,7 @@
               <h2>รายชื่ออาจารย์ผู้สอน</h2>
               <input type="file" v-on:change="onChangeTeacher">
               <br>
-              * ไฟล์ตัวอย่าง <a href="/static/teacher.csv">Download</a>
+              * ไฟล์ตัวอย่าง <a href="/static/teacher.csv" class="btn btn-info" >Download</a>
             </div>
             <div v-if="localStorage.techers.length > 0" v-for="techer in localStorage.techers">
               <techer
@@ -49,9 +49,9 @@
     <div class="dropdown">
       <i class="fa fa-cogs" aria-hidden="true"></i>
       <div class="dropdown-content">
-        <button @click="clearAll()" class="btn btn-danger">Clear</button>
-        <button @click="saveToJsonFile" class="btn btn-danger">Save</button>
-        <button @click="convertJsonToCsv" class="btn btn-danger">Export</button>
+        <button @click="clearAll()" class="btn btn-danger">Clear Data</button>
+        <button @click="saveToJsonFile" class="btn btn-danger">Save Json</button>
+        <button @click="convertJsonToCsv" class="btn btn-danger">Export Csv</button>
       </div>
     </div>
   </div>
