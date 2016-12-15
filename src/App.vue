@@ -50,7 +50,7 @@
       <i class="fa fa-cogs" aria-hidden="true"></i>
       <div class="dropdown-content">
         <button @click="clearAll()" class="btn btn-danger">Clear Data</button>
-        <button @click="saveToJsonFile" class="btn btn-danger">Save Json</button>
+        <button @click="saveToJsonFile" class="btn btn-danger">Export Json</button>
         <button @click="convertJsonToCsv" class="btn btn-danger">Export Csv</button>
       </div>
     </div>
@@ -74,11 +74,21 @@ export default {
       console.log(data)
       var csvContent = 'data:text/csv;charset=utf-8,'
       var _this = this
+      var tempSub = []
+      var tempTech = []
       csvContent += 'รหัสวิชา,หน่วยกิต,ชื่อวิชา,ชื่ออาจารย์\n'
       data.forEach(function (infoArray, index) {
         var subject = _this.localStorage.subjects.find(subject => subject.id === infoArray.subject)
         var teacher = _this.localStorage.techers.find(techer => techer.id === infoArray.techer)
-        csvContent += subject.code + ',' + subject.credit + ',' + subject.name + ',' + teacher.name + '\n'
+        tempSub.push(subject)
+        tempTech.push(teacher)
+        // csvContent += subject.code + ',' + subject.credit + ',' + subject.name + ',' + teacher.name + '\n'
+        console.log(csvContent)
+      })
+      tempSub = tempSub.sort((a, b) => (a.code - b.code))
+      tempTech = tempTech.sort((a, b) => (a.code - b.code))
+      tempSub.forEach(function (infoArray, index) {
+        csvContent += tempSub[index].code + ',' + tempSub[index].credit + ',' + tempSub[index].name + ',' + tempTech[index].name + '\n'
         console.log(csvContent)
       })
       var encodedUri = encodeURI(csvContent)
